@@ -3051,6 +3051,21 @@ impl AdapterOps for ManagerOps {
         })
     }
 
+    fn reconcile_qwenwork(
+        &self,
+        target: &Path,
+        pending: &Path,
+        tree_digests: &[String],
+        replacement: Option<&Path>,
+    ) -> Result<(), AdapterError> {
+        validate_ops_path(target, &self.allowed_roots)?;
+        validate_ops_path(pending, &self.allowed_roots)?;
+        if let Some(source) = replacement {
+            validate_ops_path(source, &self.allowed_roots)?;
+        }
+        super::qwenwork::tree::reconcile(target, pending, tree_digests, replacement)
+    }
+
     fn read_file(&self, path: &Path) -> Result<Option<Vec<u8>>, AdapterError> {
         validate_ops_path(path, &self.allowed_roots)?;
         // Refuse to follow a symlink at `path`: reading through it could
@@ -3767,8 +3782,8 @@ fn allowed_adapter_types(framework: &str) -> Option<&'static [&'static str]> {
         "openclaw" | "hermes" => Some(&["plugin", "skill_bundle"]),
         // Marketplace-plugin frameworks: plugin only.
         "codex" | "claude-code" => Some(&["plugin"]),
-        // OpenCode loads local JavaScript/TypeScript plugins from symlinks.
-        "opencode" => Some(&["plugin"]),
+        // Local registration is separate from runtime activation.
+        "opencode" | "qwenwork" => Some(&["plugin"]),
         // Qoder installs a directory-named plugin and activates it via
         // settings.json entries: plugin only (no extension / skill_bundle).
         "qoder" => Some(&["plugin"]),
@@ -4133,6 +4148,11 @@ fn plan_disable_report(claim: &AdapterClaim) -> DisableReport {
     // OpenClaw (registry-only) does not.
     let mut cleanup_ids: Vec<&str> = Vec::new();
     let cli_step: Option<(&str, &str)> = match &claim.driver_payload {
+        DriverPayload::QwenWork(q) => {
+            cleanup_ids.extend([q.plugin_resource.as_str(), q.pending_resource.as_str()]);
+            messages.push("would remove only unmodified owned QwenWork trees; restart the desktop app afterward".to_string());
+            None
+        }
         DriverPayload::OpenCode(_) => {
             cleanup_ids.extend(claim.resources.iter().map(|resource| resource.id.as_str()));
             None
@@ -8067,6 +8087,35 @@ source = "{datadir}/skills/code-scanner/"
     }
 
     // -- copy_tree / remove_tree boundary ------------------------------------
+
+    #[test]
+    fn qwenwork_transaction_rejects_every_outside_path() {
+        let tmp = tempfile::tempdir().expect("tempdir");
+        let allowed = tmp.path().join("allowed");
+        let outside = tmp.path().join("outside");
+        let target = allowed.join("plugins-custom/tokenless");
+        let pending = allowed.join(".anolisa-qwenwork-tokenless");
+        let ops = ManagerOps::new(
+            CentralLog::open(tmp.path().join("log.jsonl")),
+            "test".into(),
+            "user".into(),
+            "tokenless".into(),
+            "test".into(),
+            vec![allowed.clone()],
+        );
+        for (destination, recovery, source) in [
+            (&outside, &pending, None),
+            (&target, &outside, None),
+            (&target, &pending, Some(outside.as_path())),
+        ] {
+            assert!(matches!(
+                ops.reconcile_qwenwork(destination, recovery, &[], source),
+                Err(AdapterError::ClaimValidation(_))
+            ));
+        }
+        assert!(!allowed.exists());
+        assert!(!outside.exists());
+    }
 
     #[test]
     fn copy_tree_rejects_source_outside_allowed_roots() {

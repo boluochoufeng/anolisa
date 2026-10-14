@@ -599,6 +599,25 @@ pub enum DriverPayload {
     /// DeepSeek Harness (`dsh`) native plugin payload.
     #[serde(rename = "dsh")]
     Dsh(DshClaim),
+    /// QwenWork desktop sideload; the discriminator is its framework identity.
+    #[serde(rename = "qwenwork")]
+    QwenWork(QwenWorkClaim),
+}
+
+/// Receipt authority for a QwenWork plugin and an interrupted tree replacement.
+#[derive(Debug, Clone, Serialize, Deserialize, PartialEq, Eq)]
+pub struct QwenWorkClaim {
+    /// Desktop version observed at sideload time, not a runtime health signal.
+    pub app_version: String,
+    /// Whether the preflight found RTK; false leaves response compression usable.
+    pub rtk_available: bool,
+    /// Validated external resource containing the installed plugin directory.
+    pub plugin_resource: String,
+    /// Validated external resource outside the desktop plugin scanner.
+    pub pending_resource: String,
+    /// Exact inventories authorized before mutation, including prior revisions
+    /// until replacement and cleanup finish. Never executable instructions.
+    pub tree_digests: Vec<String>,
 }
 
 /// OpenCode ownership refers to a validated symlink resource, never a second path.

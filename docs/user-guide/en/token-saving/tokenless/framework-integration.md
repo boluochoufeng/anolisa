@@ -108,16 +108,19 @@ adapter needs Bash, Python 3.9+, and the Tokenless binary. RTK is required for
 command rewriting but not for response compression. Ensure these binaries are
 available to the desktop session, not only to an interactive terminal.
 
-The adapter is **not** automatically activated, and there is no ANOLISA built-in
-`qwenwork` driver yet. The generic `anolisa adapter enable` commands below do not
-apply to this target. Use its bundled scripts after installing a package that
-includes the adapter, adjusting the resource path for your installation:
+Install and explicitly sideload through ANOLISA:
 
 ```bash
-bash ~/.local/share/anolisa/adapters/tokenless/qwenwork/scripts/detect.sh
-bash ~/.local/share/anolisa/adapters/tokenless/qwenwork/scripts/install.sh --dry-run
-bash ~/.local/share/anolisa/adapters/tokenless/qwenwork/scripts/install.sh
+anolisa install tokenless
+anolisa --dry-run adapter enable tokenless qwenwork
+anolisa adapter enable tokenless qwenwork
+anolisa adapter status tokenless
 ```
+
+The driver adopts unmodified standalone-script installations after validating
+ownership. CLI status remains `unknown` for desktop activation and loaded hooks.
+See the [adapter reference](../../user-entrypoint/anolisa-cli.md#adapter) for
+recovery, conflict handling, and desktop dependency checks.
 
 Quit QwenWorkCN before installation or upgrade, then restart it and open a new
 **local** session. Check the plugin's enabled status in the application: successful
@@ -134,8 +137,13 @@ Do not point this adapter at Qoder CLI or Qwen Code configuration directories.
 To remove only the managed, unmodified plugin, then restart the application:
 
 ```bash
-bash ~/.local/share/anolisa/adapters/tokenless/qwenwork/scripts/uninstall.sh
+anolisa adapter disable tokenless qwenwork
 ```
+
+For older CLIs without this driver, use the bundled `scripts/detect.sh`,
+`scripts/install.sh --dry-run`, `scripts/install.sh`, and `scripts/uninstall.sh`
+under `~/.local/share/anolisa/adapters/tokenless/qwenwork/`, adjusting the path
+for your installation. Complete ANOLISA disable before switching to scripts.
 
 Source checkouts also expose `make qwenwork-install` and `make qwenwork-uninstall`
 for already-installed adapter resources. Neither installation nor removal needs

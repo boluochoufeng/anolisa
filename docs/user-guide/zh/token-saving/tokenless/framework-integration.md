@@ -97,15 +97,18 @@ PreToolUse **仅匹配 Bash**，使用 RTK 改写受支持的命令。PostToolUs
 Tokenless 二进制。命令改写需要 RTK，响应压缩不依赖 RTK。确保桌面会话能够找到这些
 二进制，而不只是交互式终端能够找到。
 
-Adapter **不会自动启用**，ANOLISA 目前也没有内置 `qwenwork` driver，因此下文通用的
-`anolisa adapter enable` 命令不适用于此目标。安装包含该 Adapter 的软件包后，使用随包
-脚本，并按实际安装位置调整资源路径：
+通过 ANOLISA 安装并显式旁加载：
 
 ```bash
-bash ~/.local/share/anolisa/adapters/tokenless/qwenwork/scripts/detect.sh
-bash ~/.local/share/anolisa/adapters/tokenless/qwenwork/scripts/install.sh --dry-run
-bash ~/.local/share/anolisa/adapters/tokenless/qwenwork/scripts/install.sh
+anolisa install tokenless
+anolisa --dry-run adapter enable tokenless qwenwork
+anolisa adapter enable tokenless qwenwork
+anolisa adapter status tokenless
 ```
+
+驱动校验归属后可接管未修改的独立脚本安装。桌面端激活及 Hook 加载状态在 CLI 中仍为
+`unknown`。恢复、冲突处理及桌面依赖检查参见
+[adapter 参考](../../user-entrypoint/anolisa-cli.md#adapter)。
 
 安装或升级前退出千问办公，完成后重启并开启新的**本地**会话。在应用内检查插件启用状态：
 旁加载成功不代表已经加载或激活。安装器把自包含插件复制到
@@ -120,8 +123,12 @@ bash ~/.local/share/anolisa/adapters/tokenless/qwenwork/scripts/install.sh
 卸载只移除未被修改的受管理插件，完成后同样需要重启应用：
 
 ```bash
-bash ~/.local/share/anolisa/adapters/tokenless/qwenwork/scripts/uninstall.sh
+anolisa adapter disable tokenless qwenwork
 ```
+
+对于没有此驱动的旧版 CLI，可使用 `~/.local/share/anolisa/adapters/tokenless/qwenwork/`
+下的 `scripts/detect.sh`、`scripts/install.sh --dry-run`、`scripts/install.sh` 和
+`scripts/uninstall.sh`，并按安装位置调整路径。切换到脚本前先完成 ANOLISA disable。
 
 源码 Checkout 也提供 `make qwenwork-install` 和 `make qwenwork-uninstall`，操作已经安装的
 Adapter 资源。安装和卸载都不需要调用内嵌 Qoder CLI 或未公开的桌面 API。

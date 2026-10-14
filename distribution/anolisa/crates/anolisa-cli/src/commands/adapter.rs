@@ -434,7 +434,11 @@ fn handle_enable(
                 };
                 return render_json(COMMAND, payload);
             }
-            println!("Enabled {}/{}.", claim.component, claim.framework);
+            if claim.framework == "qwenwork" {
+                println!("Sideloaded {}/{}.", claim.component, claim.framework);
+            } else {
+                println!("Enabled {}/{}.", claim.component, claim.framework);
+            }
             if let Some(pid) = &claim.plugin_id {
                 println!("  plugin: {pid}");
             }

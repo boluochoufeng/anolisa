@@ -119,8 +119,8 @@ dest = "{datadir}/adapters/{component}/qoder/"
 # driver never invokes them — enable/disable behavior is built into Rust.
 entry = ".qoder-plugin/plugin.json"
 
-# Payload only: macOS local-mode sideloading uses the bundled scripts, not
-# `anolisa adapter enable`; there is no built-in qwenwork framework driver.
+# The built-in qwenwork driver manages explicit macOS local-mode sideloads.
+# Bundled lifecycle scripts remain available for older ANOLISA installations.
 [[adapters]]
 framework = "qwenwork"
 adapter_type = "plugin"

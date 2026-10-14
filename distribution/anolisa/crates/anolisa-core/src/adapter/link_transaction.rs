@@ -202,7 +202,8 @@ fn sync_directory(path: &Path) -> io::Result<()> {
     fs::File::open(path)?.sync_all()
 }
 
-fn rename(from: &Path, to: &Path, exchange: bool) -> io::Result<()> {
+/// Rename without replacing a destination, or atomically exchange both entries.
+pub(super) fn rename(from: &Path, to: &Path, exchange: bool) -> io::Result<()> {
     use std::ffi::CString;
     use std::os::unix::ffi::OsStrExt;
     let from = CString::new(from.as_os_str().as_bytes())?;

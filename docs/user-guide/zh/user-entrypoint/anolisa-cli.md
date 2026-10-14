@@ -217,6 +217,43 @@ adapter；其他框架和仅含 skill 的 adapter 会拒绝它。它不撤销 Op
 报告的能力要求。Capability consent 不授予 `--allow-unsafe-plugin-install`
 权限；同意被拒绝时会单独诊断，不归为插件安全扫描拒绝。
 
+对于 macOS 上的千问办公桌面端本地会话，可管理 Tokenless 旁加载插件：
+
+```bash
+anolisa adapter scan
+anolisa --dry-run adapter enable tokenless qwenwork
+anolisa adapter enable tokenless qwenwork
+anolisa adapter status tokenless
+anolisa adapter disable tokenless qwenwork
+```
+
+安装或升级前退出千问办公。enable 或 disable 后重启应用并开启新的本地会话。
+`enable` 报告的是**已旁加载**，应用内激活仍需在界面确认。复制文件完整时，汇总状态
+仍为 `unknown`，因为无法验证应用内激活及 Hook 加载；文件缺失或变化报告 `degraded`，
+未完成的操作保留收据供清理并报告 `cleanup_failed`。
+
+检测读取 `/Applications` 或 `~/Applications` 下的 `QwenWorkCN.app`，检查 Bundle ID
+和版本，不要求存在框架 CLI。Tokenless 已验证的桌面版本为 1.2.5；其他版本提示兼容性
+未经验证。不支持 Linux、Windows 或安全工作区／Linux VM 会话。
+`TOKENLESS_QWENWORK_APP` 覆盖应用 Bundle，`TOKENLESS_QWENWORK_HOME` 覆盖数据目录
+（默认 `~/.qwenworkcn`）。路径必须为不含 `..` 的绝对路径；支持按用户主目录展开 `~/`。
+status、重试及 disable 必须保持相同的数据目录配置。
+
+驱动将自包含插件复制到 `plugins-custom/tokenless`，不编辑 settings、权限、数据库
+或插件禁用列表。仅在归属标记和完整文件清单均匹配时接管已有脚本安装；冲突、用户修改
+及不安全链接会保留并报错。接管后使用 ANOLISA 管理插件；切回独立脚本或降级到不识别 QwenWork 收据的旧版 CLI
+前先完成 disable。
+
+替换使用暂存目录和原子交换，文件系统需支持不覆盖及交换 rename。发布或清理中断时，
+保留错误信息列出的恢复路径，解决文件冲突后，使用相同数据目录重试 enable 或 disable。
+构建尚未发布的暂存副本时突然退出，可能留下 `.anolisa-qwenwork-stage-*` 目录；该目录
+位于插件扫描目录之外，不会被加载或自动接管。应用或原始 Adapter 资源被删除后仍可
+执行 disable。dry-run 进行只读预检，不写收据或插件文件。
+
+桌面 Hook 必须能找到 Bash、Python 3.9+ 和 Tokenless，不能只依赖交互式终端的 PATH。
+缺少 RTK 时命令改写不可用，但响应压缩仍可用。ANOLISA 不安装或启动桌面应用，也不调用
+其内嵌 Qoder CLI。
+
 对于 OpenCode，可用以下命令管理已安装的 Tokenless 插件：
 
 ```bash

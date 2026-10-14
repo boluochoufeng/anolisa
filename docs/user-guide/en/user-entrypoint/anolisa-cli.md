@@ -239,6 +239,55 @@ capabilities before authorizing them separately. Capability consent does not
 authorize `--allow-unsafe-plugin-install`; a consent rejection is reported
 separately from a plugin-safety rejection.
 
+For QwenWorkCN desktop local sessions on macOS, manage the Tokenless sideload:
+
+```bash
+anolisa adapter scan
+anolisa --dry-run adapter enable tokenless qwenwork
+anolisa adapter enable tokenless qwenwork
+anolisa adapter status tokenless
+anolisa adapter disable tokenless qwenwork
+```
+
+Quit QwenWorkCN before installation or upgrade. After enable or disable, restart
+it and open a new local session. `enable` reports **sideloaded**, not verified
+activation: confirm activation in the desktop UI. Healthy copied files still
+produce an `unknown` summary because activation and loaded hooks cannot be
+verified. Missing or changed files produce `degraded`; interrupted operations
+retain their receipt for cleanup and report `cleanup_failed`.
+
+Detection reads `QwenWorkCN.app` in `/Applications` or `~/Applications`, including
+its Bundle ID and version; no framework CLI is required. The verified Tokenless
+desktop target is 1.2.5; other versions produce an unverified-compatibility notice.
+Linux, Windows, and security-workspace/Linux VM sessions are unsupported.
+`TOKENLESS_QWENWORK_APP` overrides the application bundle, and
+`TOKENLESS_QWENWORK_HOME` overrides the data directory (default `~/.qwenworkcn`).
+Use absolute paths without `..`; `~/` is expanded against the user's home.
+Keep the same data-directory configuration for status, retry, and disable.
+
+The driver copies a self-contained plugin to `plugins-custom/tokenless`, without
+editing settings, permissions, databases, or disabled-plugin lists. It adopts
+an existing standalone-script installation only when its ownership marker and
+complete file inventory match. Conflicts, modified files, and unsafe links are
+preserved. After adoption, use ANOLISA to manage the plugin; complete disable
+before switching back to standalone scripts or downgrading to an older CLI that
+does not recognize QwenWork receipts.
+
+Replacement uses a staging directory and an atomic exchange; the filesystem
+must support no-replace and exchange rename. If publication or cleanup is
+interrupted, keep the reported recovery paths and retry enable or disable with
+the same data directory. Resolve any reported file conflict first. Abrupt exit
+while building an unpublished staging copy may leave a `.anolisa-qwenwork-stage-*`
+directory outside the plugin scanner; it is not loaded or automatically adopted.
+Disable does not need the application or original adapter sources to remain
+installed. Dry-run performs read-only preflight without writing receipts or
+plugin files.
+
+Bash, Python 3.9+, and Tokenless must be available to desktop hooks, independently
+of an interactive terminal's PATH. Missing RTK disables command rewriting but
+leaves response compression available. ANOLISA neither installs nor starts the
+desktop application and does not invoke its embedded Qoder CLI.
+
 For OpenCode, manage an installed Tokenless plugin with:
 
 ```bash

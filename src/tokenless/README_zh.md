@@ -355,16 +355,16 @@ PostToolUse **监听所有工具**，按公共策略压缩符合条件的完整�
 保留文件内容保护和 RTK 去重。统计归属为 `qwenwork`，
 与 Qoder CLI、Qwen Code、QwenPaw 独立。
 
-安装 Adapter 资源后，先预览，再显式旁加载插件：
+通过 `anolisa install tokenless` 安装后，先预览，再显式旁加载插件：
 
 ```bash
-bash ~/.local/share/anolisa/adapters/tokenless/qwenwork/scripts/install.sh --dry-run
-bash ~/.local/share/anolisa/adapters/tokenless/qwenwork/scripts/install.sh
+anolisa --dry-run adapter enable tokenless qwenwork
+anolisa adapter enable tokenless qwenwork
 ```
 
 重启千问办公并开启新的本地会话，在应用内检查插件已启用。旁加载不会修改 settings，也不会
-自动启用已禁用的插件。当前不支持安全工作区／VM 会话或 `anolisa adapter enable`。
-安装、卸载及 1.2.5 验证范围参见[千问办公集成](../../docs/user-guide/zh/token-saving/tokenless/framework-integration.md#千问办公macos-本地模式)。
+自动启用已禁用的插件。CLI 中的桌面激活状态保持 `unknown`；不支持安全工作区／VM 会话。
+安装、卸载、旧版 CLI 的脚本入口及 1.2.5 验证范围参见[千问办公集成](../../docs/user-guide/zh/token-saving/tokenless/framework-integration.md#千问办公macos-本地模式)。
 
 ### QwenPaw 安装
 

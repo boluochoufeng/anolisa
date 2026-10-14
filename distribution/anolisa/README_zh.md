@@ -68,6 +68,10 @@ ANOLISA 管理插件链接；启用或禁用后需重启 OpenCode。
 自定义配置目录及已有安装的接管规则见
 [adapter 参考](../../docs/user-guide/zh/user-entrypoint/anolisa-cli.md#adapter)。
 
+在 macOS 上通过 `anolisa adapter enable tokenless qwenwork` 向千问办公旁加载
+Tokenless。完成后重启桌面应用，开启新的本地会话，并在界面确认启用。CLI 状态检查
+复制的文件；应用内激活及 Hook 加载状态保持 `unknown`。
+
 ## 安装模式
 
 | 模式 | 前缀 | 使用场景 |

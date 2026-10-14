@@ -558,6 +558,30 @@ pub trait AdapterOps {
         })
     }
 
+    /// Reconcile a QwenWork sideload using receipt-authorized tree inventories.
+    /// Both destination slots are validated by the Manager; no packaged script
+    /// is executed. A missing replacement requests ownership-checked removal.
+    ///
+    /// # Errors
+    /// Returns an error on conflicts or incomplete replacement, retaining the
+    /// receipt and recoverable directories for a later retry.
+    fn reconcile_qwenwork(
+        &self,
+        target: &Path,
+        pending: &Path,
+        tree_digests: &[String],
+        replacement: Option<&Path>,
+    ) -> Result<(), AdapterError> {
+        let _ = (pending, tree_digests, replacement);
+        Err(AdapterError::Io {
+            path: target.to_path_buf(),
+            source: std::io::Error::new(
+                std::io::ErrorKind::Unsupported,
+                "operation provider does not support QwenWork tree transactions",
+            ),
+        })
+    }
+
     /// Read `path`, returning `Ok(None)` when it does not exist (so a
     /// caller merging into a possibly-absent config file can treat "absent"
     /// distinctly from "unreadable"). The Manager validates that `path` is

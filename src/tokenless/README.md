@@ -693,17 +693,18 @@ output; full MCP responses remain compressible. File-content protection and RTK
 deduplication remain unchanged. Statistics use `qwenwork`, independently of Qoder CLI, Qwen Code,
 and QwenPaw.
 
-After installing the adapter resources, preview and explicitly sideload the plugin:
+After `anolisa install tokenless`, preview and explicitly sideload the plugin:
 
 ```bash
-bash ~/.local/share/anolisa/adapters/tokenless/qwenwork/scripts/install.sh --dry-run
-bash ~/.local/share/anolisa/adapters/tokenless/qwenwork/scripts/install.sh
+anolisa --dry-run adapter enable tokenless qwenwork
+anolisa adapter enable tokenless qwenwork
 ```
 
 Restart QwenWorkCN and open a new local session; check that the plugin is enabled
 in the application. Sideloading does not change settings or enable a disabled
-plugin. This adapter does not support security-workspace/VM sessions or
-`anolisa adapter enable`. Installation, removal, and the 1.2.5 validation scope are
+plugin. Desktop activation remains `unknown` in CLI status. This adapter does not
+support security-workspace/VM sessions. Installation, removal, older-CLI script
+usage, and the 1.2.5 validation scope are
 covered in [QwenWork integration](../../docs/user-guide/en/token-saving/tokenless/framework-integration.md#qwenwork-macos-local-mode).
 
 ## Claude Code Plugin
