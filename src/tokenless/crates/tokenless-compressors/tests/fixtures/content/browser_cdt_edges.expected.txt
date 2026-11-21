@@ -1,0 +1,26 @@
+Successfully clicked on the element
+Page navigated to https://news.example.com/newest.
+## Latest page snapshot
+U1=https://news.example.com/
+depth	uid	role	name	url	value	attrs
+0	2_0	RootWebArea	New Links	U1/newest		busy
+1	2_1	link	Home	U1		
+1	2_3	textbox			"browser use"	multiline
+1	2_4	textbox	empty		""	
+1	2_7	link	设置	javascript:;		
+1	2_9	ignored				
+1	4_10	StaticText	line1\nline2			
+1	4_11	img	logo	U1/l.png		description="see url= x"
+1	4_12		 | 			
+1	5_20	link	Story number 0 with a reasonably long title	U1/item?id=0		
+1	5_21	link	Story number 1 with a reasonably long title	U1/item?id=1		
+1	5_22	link	Story number 2 with a reasonably long title	U1/item?id=2		
+1	5_23	link	Story number 3 with a reasonably long title	U1/item?id=3		
+1	5_24	link	Story number 4 with a reasonably long title	U1/item?id=4		
+1	5_25	link	Story number 5 with a reasonably long title	U1/item?id=5		
+1	5_26	link	Story number 6 with a reasonably long title	U1/item?id=6		
+1	5_27	link	Story number 7 with a reasonably long title	U1/item?id=7		
+1	5_28	link	Story number 8 with a reasonably long title	U1/item?id=8		
+1	5_29	link	Story number 9 with a reasonably long title	U1/item?id=9		
+1	5_30	link	Story number 10 with a reasonably long title	U1/item?id=10		
+1	5_31	link	Story number 11 with a reasonably long title	U1/item?id=11		

@@ -1,0 +1,3 @@
+## Latest page snapshot
+uid=1_0 RootWebArea "x"
+  uid=1_1 StaticText "open

@@ -13,8 +13,9 @@ use tokenless_ccr::{
     InMemoryStore, RecoveryMethod, StashStore, compute_key, is_valid_hash, recovery_instruction,
 };
 use tokenless_compressors::{
-    BuildLogCompressor, BuildLogOperation, BuildLogOutcome, HtmlExtractor, JsonCompressionContext,
-    JsonCompressor, JsonOperation, SearchResultsCompressor, TabularCompressor, TabularOperation,
+    BrowserSnapshotCompressor, BuildLogCompressor, BuildLogOperation, BuildLogOutcome,
+    HtmlExtractor, JsonCompressionContext, JsonCompressor, JsonOperation, SearchResultsCompressor,
+    TabularCompressor, TabularOperation,
 };
 
 const FIXTURES: &[&str] = &[
@@ -458,6 +459,37 @@ fn tabular_goldens() {
         } else {
             check(name, &source, &output);
         }
+    }
+}
+
+#[test]
+fn browser_snapshot_goldens() {
+    for (name, retained) in [
+        ("browser_pw_basic", "\te3\t"),
+        ("browser_pw_edges", "f2e38"),
+        ("browser_cdt_basic", "\t1_0\t"),
+        ("browser_cdt_edges", "4_10"),
+    ] {
+        let source = input(&format!("{name}.txt"));
+        let output = BrowserSnapshotCompressor.compress(&source).unwrap();
+        assert_eq!(
+            output,
+            BrowserSnapshotCompressor.compress(&source).unwrap(),
+            "{name}: non-deterministic output"
+        );
+        assert!(output.contains(retained), "{name}: reference lost");
+        check(name, &source, &output);
+    }
+}
+
+#[test]
+fn browser_snapshot_malformed_inputs_fail_open() {
+    for name in ["browser_pw_malformed", "browser_cdt_malformed"] {
+        let source = input(&format!("{name}.txt"));
+        assert!(
+            BrowserSnapshotCompressor.compress(&source).is_none(),
+            "{name}: malformed snapshot must pass through"
+        );
     }
 }
 

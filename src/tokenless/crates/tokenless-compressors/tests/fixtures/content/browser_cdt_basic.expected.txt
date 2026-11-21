@@ -1,0 +1,42 @@
+## Latest page snapshot
+U1=https://news.ycombinator.com/
+depth	uid	role	name	url	value	attrs
+0	1_0	RootWebArea	Hacker News	U1		
+1	1_1	link		U1		
+1	1_2	link	Hacker News	U1/news		
+1	1_4	link	new	U1/newest		
+1	1_6		 | 			
+1	1_7	link	past	U1/front		
+1	1_9		 | 			
+1	1_10	link	comments	U1/newcomments		
+1	1_12		 | 			
+1	1_13	link	ask	U1/ask		
+1	1_15		 | 			
+1	1_16	link	show	U1/show		
+1	1_18		 | 			
+1	1_19	link	jobs	U1/jobs		
+1	1_21		 | 			
+1	1_22	link	submit	U1/submit		
+1	1_24	link	login	U1/login?goto=news		
+1	1_26		1.			
+1	1_27	link		U1/vote?id=50579568&how=up&goto=news		
+2	1_28	generic				description="upvote"
+1	1_29	link	Hurried Announcement: Alessandro Masullo GRH	https://math216.wordpress.com/2026/11/20/hurried-announcement-alessandro-masullo-grh/		
+1	1_31		 (			
+1	1_32	link	math216.wordpress.com	U1/from?site=math216.wordpress.com		
+1	1_34		)			
+1	1_35		1758 points			
+1	1_36		 by 			
+1	1_37	link	jasondavies	U1/user?id=jasondavies		
+1	1_39		 			
+1	1_40	link	10 hours ago	U1/item?id=50579568		
+1	1_42		 			
+1	1_43		| 			
+1	1_44	link	hide	U1/hide?id=50579568&goto=news		
+1	1_46		 | 			
+1	1_47	link	782 comments	U1/item?id=50579568		
+1	1_49		2.			
+1	1_50	link		U1/vote?id=50574968&how=up&goto=news		
+2	1_51	generic				description="upvote"
+1	1_52	link	Levent Alpöge claims proof of the Generalized Riemann Hypothesis [pdf]	https://alpo.ge/remark.pdf		
+1	1_54		 (			
